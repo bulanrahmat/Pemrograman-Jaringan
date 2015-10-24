@@ -85,7 +85,7 @@ def chat_server():
 		           if sock in SOCKET_LIST:
 		                SOCKET_LIST.remove(sock)
 			   simpan = MAP[sock]     
-		           broadcast(server_socket, sock, "\rClient (%s) off\n" % simpan) 
+		           broadcast(server_socket, sock, "\rClient (%s) off\n" %simpan) 
  
                 except:
                     broadcast(server_socket, sock, "\rClient off\n" )
@@ -94,7 +94,7 @@ def chat_server():
     server_socket.close()
 
 def anggota(sock1,server_socket):
-	data ="\rlist yang online\n"	
+	data ="\ronline list\n"	
 	for socket in SOCKET_LIST :
 		for key,value in MAP.iteritems():
 			if socket == value :
@@ -127,7 +127,7 @@ def login(sock,name,server_socket):
 		if key == name :
 			test=False
 	if(test==False):
-		sock.send("\rnama sudah dipake\n")
+		sock.send("\rUsername already in use\n")
 	else :
 		MAP[name]=sock
 		broadcast1(sock,server_socket,name)
