@@ -14,38 +14,51 @@ def chat_client():
     s.settimeout(2)
      
     # connect to remote host
-    try :
-        s.connect((host, port))
-    except :
-        print 'Unable to connect'
-        sys.exit()
-     
-    print 'Connected to remote host. You can start sending messages'
-    sys.stdout.write('[Me] '); sys.stdout.flush()
-     
-    while 1:
-        socket_list = [sys.stdin, s]
+
+
+    print 'Please write login to login'
+    test=raw_input()
+    if test == "login" :
+	    sys.stdout.write('Write your username '); sys.stdout.flush()
+	    test =raw_input()
+	    if test == '':
+	    	sys.exit()
+    	    try :
+       	 	s.connect((host, port))
+    	    except :
+        	print 'Unable to connect'
+        	sys.exit()
+            print 'Write list to view user active'
+            print 'Start chatting'
+            sys.stdout.write(test+" says "); sys.stdout.flush()
+            s.send(test+" says "+ test) 
+            while 1:
+        	socket_list = [sys.stdin, s] 
+        	# Get the list sockets which are readable
+        	read_sockets, write_sockets, error_sockets = select.select(socket_list , [], [])
          
-        # Get the list sockets which are readable
-        read_sockets, write_sockets, error_sockets = select.select(socket_list , [], [])
-         
-        for sock in read_sockets:            
-            if sock == s:
-                # incoming message from remote server, s
-                data = sock.recv(4096)
-                if not data :
-                    print '\nDisconnected from chat server'
-                    sys.exit()
-                else :
+        	for sock in read_sockets:            
+            	    if sock == s:
+                        data = sock.recv(4096)
+                        if not data :
+                            print '\nDisconnected from chat server'
+                            sys.exit()
+                        else :
                     #print data
-                    sys.stdout.write(data)
-                    sys.stdout.write('[Me] '); sys.stdout.flush()     
+                            sys.stdout.write(data)
+		            if data =="\rUsername already use\n":
+		                sys.exit()
+                            else :
+		                sys.stdout.write(test+" says "); sys.stdout.flush()     
             
-            else :
-                # user entered a message
-                msg = sys.stdin.readline()
-                s.send(msg)
-                sys.stdout.write('[Me] '); sys.stdout.flush() 
+                    else :
+               		# user entered a message
+                 	msg = sys.stdin.readline()
+		 	msg = test+" says "+msg
+			s.send(msg)
+		 	sys.stdout.write(test+" says "); sys.stdout.flush()
+    else :
+	sys.exit()
 
 if __name__ == "__main__":
 
