@@ -46,7 +46,7 @@ def chat_client():
                         else :
                     #print data
                             sys.stdout.write(data)
-		            if data =="\rUsername already use\n":
+		            if data =="\rUsername already in use\n":
 		                sys.exit()
                             else :
 		                sys.stdout.write(test+" says "); sys.stdout.flush()     
